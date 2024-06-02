@@ -21,7 +21,8 @@ const mapsRouter = new Hono()
 
     return c.json({
       data: getMapsResult.value,
-    });
+      ok: true,
+    } as const);
   })
   // GET /maps/:id
   .get("/:id", async (c) => {
@@ -44,7 +45,8 @@ const mapsRouter = new Hono()
 
     return c.json({
       data: getMapResult.value,
-    });
+      ok: true,
+    } as const);
   })
   // POST /maps
   .post(
@@ -68,7 +70,10 @@ const mapsRouter = new Hono()
         return sendError(c, createMapResult.error, 500);
       }
 
-      return c.json({ id: createMapResult.value.id });
+      return c.json({
+        data: { id: createMapResult.value.id },
+        ok: true,
+      } as const);
     }
   );
 

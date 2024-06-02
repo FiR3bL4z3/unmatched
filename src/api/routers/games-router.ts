@@ -21,7 +21,8 @@ const gamesRouter = new Hono()
 
     return c.json({
       data: getGamesResult.value,
-    });
+      ok: true,
+    } as const);
   })
   // GET /games/:id
   .get("/:id", async (c) => {
@@ -44,7 +45,8 @@ const gamesRouter = new Hono()
 
     return c.json({
       data: getGameResult.value,
-    });
+      ok: true,
+    } as const);
   })
   // POST /games
   .post(
@@ -157,7 +159,10 @@ const gamesRouter = new Hono()
         return sendError(c, createGameResult.error, 500);
       }
 
-      return c.json({ id: createGameResult.value.id });
+      return c.json({
+        data: { id: createGameResult.value.id },
+        ok: true,
+      } as const);
     }
   );
 

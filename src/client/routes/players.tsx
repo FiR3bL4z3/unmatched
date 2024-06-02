@@ -5,7 +5,7 @@ import { QueryError } from "../components/query-error";
 import { Link } from "react-router-dom";
 
 const loadData = async () => {
-  const response = await client.characters.$get();
+  const response = await client.players.$get();
 
   const json = await response.json();
 
@@ -18,22 +18,22 @@ const loadData = async () => {
 
 export default function Page() {
   const { data, isLoading, error } = useQuery({
-    queryKey: ["characters"],
+    queryKey: ["players"],
     queryFn: loadData,
   });
   return (
     <div>
-      <h1>Characters</h1>
+      <h1>Players</h1>
       {isLoading && <p>Loading...</p>}
       {data && (
         <div className="grid grid-cols-3 gap-4">
-          {data.map((character) => (
+          {data.map((player) => (
             <Link
-              to={`/characters/${character.id}`}
-              key={character.id}
+              to={`/players/${player.id}`}
+              key={player.id}
               className="border p-4 rounded-md shadow-md"
             >
-              <h2 className="text-xl font-bold">{character.name}</h2>
+              <h2 className="text-xl font-bold">{player.name}</h2>
             </Link>
           ))}
         </div>

@@ -4,10 +4,10 @@ import { APIError } from "../utils/api-error";
 import { QueryError } from "../components/query-error";
 import { redirect, useParams } from "react-router-dom";
 
-const loadData = async (characterId: string) => {
-  const response = await client.characters[":id"].$get({
+const loadData = async (mapId: string) => {
+  const response = await client.maps[":id"].$get({
     param: {
-      id: characterId,
+      id: mapId,
     },
   });
 
@@ -24,17 +24,17 @@ export default function Page() {
   const { id } = useParams();
 
   if (!id) {
-    throw redirect("/characters");
+    throw redirect("/maps");
   }
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["characters", id],
+    queryKey: ["maps", id],
     queryFn: () => loadData(id),
   });
 
   return (
     <div>
-      <h1>Characters</h1>
+      <h1>Maps</h1>
       {isLoading && <p>Loading...</p>}
       {data && <pre>{JSON.stringify(data, null, 2)}</pre>}
       {error && <QueryError error={error} />}
