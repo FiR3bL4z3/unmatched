@@ -1,0 +1,48 @@
+{
+  "type": "module",
+  "scripts": {
+    "db:gen": "prisma generate",
+    "db:migrate:dev": "dotenv -e .env.development -- prisma migrate dev",
+    "db:reset:dev": "dotenv -e .env.development -- prisma migrate reset --force",
+    "db:seed:dev": "dotenv -e .env.development -- prisma db seed",
+    "db:studio:dev": "dotenv -e .env.development -- prisma studio",
+    "api:dev": "bun run --watch src/api/index.ts",
+    "client:dev": "vite",
+    "client:build": "tsc && vite build",
+    "dev": "concurrently -k -p \"[{name}]\" -n \"API,Client\" -c \"yellow.bold,cyan.bold\" \"bun api:dev\" \"bun client:dev\"",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+  },
+  "dependencies": {
+    "@hono/zod-validator": "^0.2.1",
+    "@prisma/client": "^5.14.0",
+    "@tanstack/react-query": "^5.40.0",
+    "hono": "^4.4.2",
+    "neverthrow": "^6.2.1",
+    "prettier": "^3.2.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.23.1",
+    "zod": "^3.23.8",
+    "zod-validation-error": "^3.3.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "@typescript-eslint/eslint-plugin": "^7.2.0",
+    "@typescript-eslint/parser": "^7.2.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.19",
+    "concurrently": "^8.2.2",
+    "dotenv-cli": "^7.4.2",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.6",
+    "postcss": "^8.4.38",
+    "prettier-plugin-prisma": "^5.0.0",
+    "prisma": "^5.14.0",
+    "tailwindcss": "^3.4.3",
+    "typescript": "^5.2.2",
+    "vite": "^5.2.0"
+  }
+}

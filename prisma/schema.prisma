@@ -1,0 +1,66 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Player {
+  id   String @id @default(cuid())
+  name String
+
+  gamesAsPlayer1 Game[] @relation("player1")
+  gamesAsPlayer2 Game[] @relation("player2")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Character {
+  id   String @id @default(cuid())
+  name String
+
+  gamesAsCharacter1 Game[] @relation("character1")
+  gamesAsCharacter2 Game[] @relation("character2")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Map {
+  id   String @id @default(cuid())
+  name String
+  Game Game[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Game {
+  id String @id @default(cuid())
+
+  mapId String
+  map   Map    @relation(fields: [mapId], references: [id])
+
+  player1Id String
+  player1   Player @relation("player1", fields: [player1Id], references: [id])
+  player2Id String
+  player2   Player @relation("player2", fields: [player1Id], references: [id])
+
+  character1Id String
+  character1   Character @relation("character1", fields: [character1Id], references: [id])
+  character2Id String
+  character2   Character @relation("character2", fields: [character2Id], references: [id])
+
+  winner Int
+
+  date DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
