@@ -16,7 +16,7 @@ const SubmitDataValidator = z.object({
 type SubmitData = z.infer<typeof SubmitDataValidator>;
 
 const submitData = async (data: SubmitData) => {
-  const response = await client.characters.$post({ json: data });
+  const response = await client.players.$post({ json: data });
 
   const json = await response.json();
 
@@ -36,7 +36,7 @@ export default function Page() {
   const { error, mutateAsync, isPending } = useMutation({
     mutationFn: submitData,
     onSuccess: ({ id }) => {
-      navigate(`/characters/${id}`);
+      navigate(`/players/${id}`);
     },
   });
 

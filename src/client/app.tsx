@@ -2,11 +2,13 @@ import "./index.css";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Characters from "./routes/characters";
-import Characters_Id from "./routes/characters_:id";
 import Characters_Create from "./routes/characters_create";
+import Characters_Id from "./routes/characters_:id";
 import Maps from "./routes/maps";
+import Maps_Create from "./routes/maps_create";
 import Maps_Id from "./routes/maps_:id";
 import Players from "./routes/players";
+import Players_Create from "./routes/players_create";
 import Players_Id from "./routes/players_:id";
 import Games from "./routes/games";
 import Games_Id from "./routes/games_:id";
@@ -58,6 +60,10 @@ const router = createBrowserRouter([
         element: <Maps />,
       },
       {
+        path: "/maps/create",
+        element: <Maps_Create />,
+      },
+      {
         path: "/maps/:id",
         element: <Maps_Id />,
       },
@@ -66,12 +72,20 @@ const router = createBrowserRouter([
         element: <Players />,
       },
       {
+        path: "/players/create",
+        element: <Players_Create />,
+      },
+      {
         path: "/players/:id",
         element: <Players_Id />,
       },
       {
         path: "/games",
         element: <Games />,
+      },
+      {
+        path: "/games/create",
+        element: <Players_Create />,
       },
       {
         path: "/games/:id",
