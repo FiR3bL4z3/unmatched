@@ -1,3 +1,5 @@
+import { StyledButton } from "../components/button-and-link";
+
 export default function Page() {
   return (
     <div className="flex justify-center items-center">
@@ -33,15 +35,11 @@ export default function Page() {
             />
           </div>
           <div className="flex items-center justify-between">
-            <button
-              className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              type="button"
-            >
-              Sign In
-            </button>
+            <StyledButton type="button">Sign In</StyledButton>
             <a
               className="inline-block align-baseline font-bold text-sm text-gray-500 hover:text-gray-800"
               href="#"
+              // TODO: Implement this
             >
               Forgot Password?
             </a>

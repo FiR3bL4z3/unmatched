@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { StyledLink } from "./button-and-link";
 
 export type NavigationBarProps = {
   userId?: string | undefined;
@@ -18,24 +18,10 @@ export const NavigationBar = ({ userId }: NavigationBarProps) => {
       <div className="flex justify-center space-x-4">
         {links.map((link, idx) => (
           <div key={idx}>
-            <Link
-              to={link.href}
-              className="text-white hover:text-gray-300 px-4 py-2 rounded-md bg-gray-700 block"
-            >
-              {link.label}
-            </Link>
+            <StyledLink to={link.href}>{link.label}</StyledLink>
           </div>
         ))}
-        <div>
-          {!userId && (
-            <Link
-              to="/login"
-              className="text-white hover:text-gray-300 px-4 py-2 rounded-md bg-gray-700 block"
-            >
-              Login
-            </Link>
-          )}
-        </div>
+        <div>{!userId && <StyledLink to="/login">Login</StyledLink>}</div>
       </div>
     </nav>
   );

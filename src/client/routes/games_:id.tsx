@@ -2,7 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { client } from "../client";
 import { APIError } from "../utils/api-error";
 import { QueryError } from "../components/query-error";
-import { redirect, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { Loading } from "../components/loading";
 
 const loadData = async (gameId: string) => {
   const response = await client.games[":id"].$get({
@@ -22,9 +23,10 @@ const loadData = async (gameId: string) => {
 
 export default function Page() {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   if (!id) {
-    throw redirect("/games");
+    throw navigate("/characters");
   }
 
   const { data, isLoading, error } = useQuery({
@@ -35,7 +37,7 @@ export default function Page() {
   return (
     <div>
       <h1>Games</h1>
-      {isLoading && <p>Loading...</p>}
+      {isLoading && <Loading />}
       {data && <pre>{JSON.stringify(data, null, 2)}</pre>}
       {error && <QueryError error={error} />}
     </div>

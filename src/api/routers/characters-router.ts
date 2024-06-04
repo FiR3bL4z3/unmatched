@@ -73,8 +73,30 @@ const charactersRouter = new Hono()
         return sendError(c, createCharacterResult.error, 500);
       }
 
-      return c.json({ data: { id: createCharacterResult.value.id } });
+      return c.json({
+        data: { id: createCharacterResult.value.id },
+        ok: true,
+      } as const);
     }
-  );
+  )
+  .delete("/:id", async (c) => {
+    const deleteCharacterResult = await fromPromise(
+      db.character.delete({
+        where: {
+          id: c.req.param("id"),
+        },
+      }),
+      handlePrismaError
+    );
+
+    if (deleteCharacterResult.isErr()) {
+      return sendError(c, deleteCharacterResult.error, 500);
+    }
+
+    return c.json({
+      data: { id: deleteCharacterResult.value.id },
+      ok: true,
+    } as const);
+  });
 
 export { charactersRouter };

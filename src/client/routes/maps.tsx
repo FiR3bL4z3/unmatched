@@ -3,6 +3,11 @@ import { client } from "../client";
 import { APIError } from "../utils/api-error";
 import { QueryError } from "../components/query-error";
 import { Link } from "react-router-dom";
+import { Loading } from "../components/loading";
+import { Container } from "../components/container";
+import { ListPageHeader } from "../components/list-page-header";
+import { ListGrid } from "../components/list-grid";
+import { Card } from "../components/card";
 
 const loadData = async () => {
   const response = await client.maps.$get();
@@ -22,23 +27,26 @@ export default function Page() {
     queryFn: loadData,
   });
   return (
-    <div>
-      <h1>Maps</h1>
-      {isLoading && <p>Loading...</p>}
+    <Container>
+      <ListPageHeader
+        title="Maps"
+        createLink="/maps/create"
+        createButtonText="Create new map"
+      />
+
+      {isLoading && <Loading />}
       {data && (
-        <div className="grid grid-cols-3 gap-4">
+        <ListGrid>
           {data.map((map) => (
-            <Link
-              to={`/maps/${map.id}`}
-              key={map.id}
-              className="border p-4 rounded-md shadow-md"
-            >
-              <h2 className="text-xl font-bold">{map.name}</h2>
+            <Link to={`/maps/${map.id}`} key={map.id}>
+              <Card>
+                <h2 className="text-xl font-bold">{map.name}</h2>
+              </Card>
             </Link>
           ))}
-        </div>
+        </ListGrid>
       )}
       {error && <QueryError error={error} />}
-    </div>
+    </Container>
   );
 }

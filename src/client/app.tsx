@@ -3,6 +3,7 @@ import "./index.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Characters from "./routes/characters";
 import Characters_Id from "./routes/characters_:id";
+import Characters_Create from "./routes/characters_create";
 import Maps from "./routes/maps";
 import Maps_Id from "./routes/maps_:id";
 import Players from "./routes/players";
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
       {
         path: "/characters",
         element: <Characters />,
+      },
+      {
+        path: "/characters/create",
+        element: <Characters_Create />,
       },
       {
         path: "/characters/:id",

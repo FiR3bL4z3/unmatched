@@ -3,6 +3,11 @@ import { client } from "../client";
 import { APIError } from "../utils/api-error";
 import { QueryError } from "../components/query-error";
 import { Link } from "react-router-dom";
+import { ListGrid } from "../components/list-grid";
+import { Card } from "../components/card";
+import { Container } from "../components/container";
+import { Loading } from "../components/loading";
+import { ListPageHeader } from "../components/list-page-header";
 
 const loadData = async () => {
   const response = await client.characters.$get();
@@ -22,23 +27,26 @@ export default function Page() {
     queryFn: loadData,
   });
   return (
-    <div>
-      <h1>Characters</h1>
-      {isLoading && <p>Loading...</p>}
+    <Container>
+      <ListPageHeader
+        title="Characters"
+        createLink="/characters/create"
+        createButtonText="Create new character"
+      />
+
+      {isLoading && <Loading />}
       {data && (
-        <div className="grid grid-cols-3 gap-4">
+        <ListGrid>
           {data.map((character) => (
-            <Link
-              to={`/characters/${character.id}`}
-              key={character.id}
-              className="border p-4 rounded-md shadow-md"
-            >
-              <h2 className="text-xl font-bold">{character.name}</h2>
+            <Link to={`/characters/${character.id}`} key={character.id}>
+              <Card>
+                <h2 className="text-xl font-bold">{character.name}</h2>
+              </Card>
             </Link>
           ))}
-        </div>
+        </ListGrid>
       )}
       {error && <QueryError error={error} />}
-    </div>
+    </Container>
   );
 }
