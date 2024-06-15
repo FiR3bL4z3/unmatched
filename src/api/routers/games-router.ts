@@ -54,12 +54,18 @@ const gamesRouter = new Hono()
     zValidator(
       "json",
       z.object({
+        datetime: z.object({
+          year: z.number().int().min(1),
+          month: z.number().int().min(1).max(12),
+          day: z.number().int().min(1).max(31),
+          hour: z.number().int().min(0).max(23),
+          minute: z.number().int().min(0).max(59),
+        }),
         player1Id: z.string(),
         player2Id: z.string(),
         mapId: z.string(),
         character1Id: z.string(),
         character2Id: z.string(),
-        date: z.date(),
         winner: z.number().int().min(1).max(2),
       }),
       sendValidationError("json")
@@ -149,7 +155,22 @@ const gamesRouter = new Hono()
 
       const createGameResult = await fromPromise(
         db.game.create({
-          data: body,
+          data: {
+            mapId: body.mapId,
+            player1Id: body.player1Id,
+            player2Id: body.player2Id,
+            character1Id: body.character1Id,
+            character2Id: body.character2Id,
+            winner: body.winner,
+
+            date: new Date(
+              body.datetime.year,
+              body.datetime.month - 1,
+              body.datetime.day,
+              body.datetime.hour,
+              body.datetime.minute
+            ),
+          },
           select: { id: true },
         }),
         (error) => new Error(`PrismaError: ${JSON.stringify(error)}`)

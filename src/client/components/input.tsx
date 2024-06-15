@@ -1,29 +1,44 @@
-export type InputProps = {
-  label: string;
-  errorMessage?: string | undefined;
-} & Omit<React.InputHTMLAttributes<HTMLInputElement>, "className">;
+import { forwardRef } from "react";
+import { FormError } from "./form-error";
+import { FormLabel } from "./form-label";
 
-const Label = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <div className="text-gray-500 mb-2">
-      <span className="text-lg">{children}</span>
-    </div>
-  );
-};
+export type InputProps = Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  "className"
+>;
 
-const Error = ({ children }: { children: React.ReactNode }) => {
-  return <div className="text-red-500 italic">{children}</div>;
-};
-
-export const Input = ({ label, errorMessage, ...props }: InputProps) => {
-  return (
-    <label className="block py-4">
-      <Label>{label}</Label>
+export const Input = forwardRef(
+  (props: InputProps, ref: React.Ref<HTMLInputElement>) => {
+    return (
       <input
         {...props}
+        ref={ref}
         className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 block w-full"
       />
-      {errorMessage && <Error>{errorMessage}</Error>}
-    </label>
-  );
-};
+    );
+  }
+);
+
+export type InputExtendedProps = {
+  label: string;
+  errorMessage?: string | undefined;
+} & InputProps;
+
+export const InputExtended = forwardRef(
+  (
+    { label, errorMessage, ...props }: InputExtendedProps,
+    ref: React.Ref<HTMLInputElement>
+  ) => {
+    return (
+      <label className="block py-4">
+        <FormLabel>{label}</FormLabel>
+        <input
+          {...props}
+          ref={ref}
+          className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 block w-full"
+        />
+        {errorMessage && <FormError>{errorMessage}</FormError>}
+      </label>
+    );
+  }
+);

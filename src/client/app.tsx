@@ -11,6 +11,7 @@ import Players from "./routes/players";
 import Players_Create from "./routes/players_create";
 import Players_Id from "./routes/players_:id";
 import Games from "./routes/games";
+import Games_Create from "./routes/games_create";
 import Games_Id from "./routes/games_:id";
 import Home from "./routes/home";
 import Login from "./routes/login";
@@ -85,7 +86,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/games/create",
-        element: <Players_Create />,
+        element: <Games_Create />,
       },
       {
         path: "/games/:id",
