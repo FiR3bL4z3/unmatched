@@ -10,43 +10,45 @@ import { ListGrid } from "../components/list-grid";
 import { Card } from "../components/card";
 
 const loadData = async () => {
-  const response = await client.players.$get();
+    const response = await client.players.$get();
 
-  const json = await response.json();
+    const json = await response.json();
 
-  if (!json.ok) {
-    throw new APIError(json);
-  }
+    if (!json.ok) {
+        throw new APIError(json);
+    }
 
-  return json.data;
+    return json.data;
 };
 
 export default function Page() {
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["players"],
-    queryFn: loadData,
-  });
-  return (
-    <Container>
-      <ListPageHeader
-        title="Players"
-        createLink="/players/create"
-        createButtonText="Create new player"
-      />
+    const { data, isLoading, error } = useQuery({
+        queryKey: ["players"],
+        queryFn: loadData,
+    });
+    return (
+        <Container>
+            <ListPageHeader
+                title="Players"
+                createLink="/players/create"
+                createButtonText="Create new player"
+            />
 
-      {isLoading && <Loading />}
-      {data && (
-        <ListGrid>
-          {data.map((player) => (
-            <Link to={`/players/${player.id}`} key={player.id}>
-              <Card>
-                <h2 className="text-xl font-bold">{player.name}</h2>
-              </Card>
-            </Link>
-          ))}
-        </ListGrid>
-      )}
-      {error && <QueryError error={error} />}
-    </Container>
-  );
+            {isLoading && <Loading />}
+            {data && (
+                <ListGrid>
+                    {data.map((player) => (
+                        <Link to={`/players/${player.id}`} key={player.id}>
+                            <Card>
+                                <h2 className="text-xl font-bold">
+                                    {player.name}
+                                </h2>
+                            </Card>
+                        </Link>
+                    ))}
+                </ListGrid>
+            )}
+            {error && <QueryError error={error} />}
+        </Container>
+    );
 }

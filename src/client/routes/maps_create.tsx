@@ -10,70 +10,70 @@ import { Container } from "../components/container";
 import { Card } from "../components/card";
 
 const SubmitDataValidator = z.object({
-  name: z.string().min(3),
+    name: z.string().min(3),
 });
 
 type SubmitData = z.infer<typeof SubmitDataValidator>;
 
 const submitData = async (data: SubmitData) => {
-  const response = await client.maps.$post({ json: data });
+    const response = await client.maps.$post({ json: data });
 
-  const json = await response.json();
+    const json = await response.json();
 
-  if (!json.ok) {
-    throw new APIError(json);
-  }
+    if (!json.ok) {
+        throw new APIError(json);
+    }
 
-  return json.data;
+    return json.data;
 };
 
 export default function Page() {
-  const [name, setName] = useState("");
-  const [nameError, setNameError] = useState("");
+    const [name, setName] = useState("");
+    const [nameError, setNameError] = useState("");
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const { error, mutateAsync, isPending } = useMutation({
-    mutationFn: submitData,
-    onSuccess: ({ id }) => {
-      navigate(`/maps/${id}`);
-    },
-  });
+    const { error, mutateAsync, isPending } = useMutation({
+        mutationFn: submitData,
+        onSuccess: ({ id }) => {
+            navigate(`/maps/${id}`);
+        },
+    });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
 
-    const result = SubmitDataValidator.safeParse({ name });
+        const result = SubmitDataValidator.safeParse({ name });
 
-    if (!result.success) {
-      setNameError(result.error.errors[0].message);
-      return;
-    }
+        if (!result.success) {
+            setNameError(result.error.errors[0].message);
+            return;
+        }
 
-    mutateAsync(result.data);
-  };
+        mutateAsync(result.data);
+    };
 
-  return (
-    <Container>
-      <Card>
-        <form onSubmit={handleSubmit}>
-          <Input
-            type="text"
-            placeholder="..."
-            value={name}
-            label="Name"
-            errorMessage={nameError}
-            onChange={(e) => setName(e.target.value)}
-          />
+    return (
+        <Container>
+            <Card>
+                <form onSubmit={handleSubmit}>
+                    <Input
+                        type="text"
+                        placeholder="..."
+                        value={name}
+                        label="Name"
+                        errorMessage={nameError}
+                        onChange={(e) => setName(e.target.value)}
+                    />
 
-          <div className="flex justify-end">
-            <StyledButton type="submit" disabled={isPending}>
-              Submit
-            </StyledButton>
-          </div>
-          {error && <p className="text-red-500">{error.message}</p>}
-        </form>
-      </Card>
-    </Container>
-  );
+                    <div className="flex justify-end">
+                        <StyledButton type="submit" disabled={isPending}>
+                            Submit
+                        </StyledButton>
+                    </div>
+                    {error && <p className="text-red-500">{error.message}</p>}
+                </form>
+            </Card>
+        </Container>
+    );
 }

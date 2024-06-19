@@ -6,40 +6,40 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Loading } from "../components/loading";
 
 const loadData = async (mapId: string) => {
-  const response = await client.maps[":id"].$get({
-    param: {
-      id: mapId,
-    },
-  });
+    const response = await client.maps[":id"].$get({
+        param: {
+            id: mapId,
+        },
+    });
 
-  const json = await response.json();
+    const json = await response.json();
 
-  if (!json.ok) {
-    throw new APIError(json);
-  }
+    if (!json.ok) {
+        throw new APIError(json);
+    }
 
-  return json.data;
+    return json.data;
 };
 
 export default function Page() {
-  const { id } = useParams();
-  const navigate = useNavigate();
+    const { id } = useParams();
+    const navigate = useNavigate();
 
-  if (!id) {
-    throw navigate("/characters");
-  }
+    if (!id) {
+        throw navigate("/characters");
+    }
 
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["maps", id],
-    queryFn: () => loadData(id),
-  });
+    const { data, isLoading, error } = useQuery({
+        queryKey: ["maps", id],
+        queryFn: () => loadData(id),
+    });
 
-  return (
-    <div>
-      <h1>Maps</h1>
-      {isLoading && <Loading />}
-      {data && <pre>{JSON.stringify(data, null, 2)}</pre>}
-      {error && <QueryError error={error} />}
-    </div>
-  );
+    return (
+        <div>
+            <h1>Maps</h1>
+            {isLoading && <Loading />}
+            {data && <pre>{JSON.stringify(data, null, 2)}</pre>}
+            {error && <QueryError error={error} />}
+        </div>
+    );
 }

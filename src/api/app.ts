@@ -6,18 +6,18 @@ import { gamesRouter } from "./routers/games-router";
 import { cors } from "hono/cors";
 
 export const app = new Hono()
-  .use(
-    "*",
-    cors({
-      origin: "*",
+    .use(
+        "*",
+        cors({
+            origin: "*",
+        }),
+    )
+    .get("/health-check", async (c) => {
+        return c.json({ status: "ok" });
     })
-  )
-  .get("/health-check", async (c) => {
-    return c.json({ status: "ok" });
-  })
-  .route("/players", playersRouter)
-  .route("/maps", mapsRouter)
-  .route("/characters", charactersRouter)
-  .route("/games", gamesRouter);
+    .route("/players", playersRouter)
+    .route("/maps", mapsRouter)
+    .route("/characters", charactersRouter)
+    .route("/games", gamesRouter);
 
 export type AppType = typeof app;

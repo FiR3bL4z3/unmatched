@@ -9,4 +9,4 @@ import { clamp } from "./clamp";
  * @returns The clamped value or null if the value is NaN
  */
 export const nullClamp = (value: number, min: number, max: number) =>
-  isNaN(value) ? null : clamp(value, min, max);
+    isNaN(value) ? null : clamp(value, min, max);
