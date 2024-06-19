@@ -1,5 +1,6 @@
 {
     "type": "module",
+    "license": "MIT",
     "scripts": {
         "db:gen": "prisma generate",
         "db:migrate:dev": "dotenv -e .env.development -- prisma migrate dev",
