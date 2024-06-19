@@ -10,7 +10,8 @@
     "client:dev": "vite",
     "client:build": "tsc && vite build",
     "dev": "concurrently -k -p \"[{name}]\" -n \"API,Client\" -c \"yellow.bold,cyan.bold\" \"bun api:dev\" \"bun client:dev\"",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@hono/zod-validator": "^0.2.1",

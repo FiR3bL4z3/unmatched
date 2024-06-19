@@ -9,28 +9,28 @@ import { Card } from "../components/card";
 import { SelectExtended } from "../components/select";
 import { QueryError } from "../components/query-error";
 import { InputExtended } from "../components/input";
-import { useField } from "../hooks/use-field";
+import { useField } from "../form/use-field";
 import { nullClamp } from "../utils/null-clamp";
 import { handleSubmit } from "../form/handle-submit";
 import { Loading } from "../components/loading";
+import { nullableDefaultValue } from "../form/nullable-default-value";
+import { useMemo } from "react";
 
-const SubmitDataValidator = z.object({
-  datetime: z.object({
-    year: z.number().int().min(1),
-    month: z.number().int().min(1).max(12),
-    day: z.number().int().min(1).max(31),
-    hour: z.number().int().min(0).max(23),
-    minute: z.number().int().min(0).max(59),
-  }),
-  mapId: z.string().min(1),
-  player1Id: z.string().min(1),
-  player2Id: z.string().min(1),
-  character1Id: z.string().min(1),
-  character2Id: z.string().min(1),
-  winner: z.number().int().min(1).max(2),
-});
-
-type SubmitData = z.infer<typeof SubmitDataValidator>;
+type SubmitData = {
+  datetime: {
+    year: number;
+    month: number;
+    day: number;
+    hour: number;
+    minute: number;
+  };
+  mapId: string;
+  player1Id: string;
+  player2Id: string;
+  character1Id: string;
+  character2Id: string;
+  winner: number;
+};
 
 const submitData = async (data: SubmitData) => {
   const response = await client.games.$post({ json: data });
@@ -72,6 +72,7 @@ const loadData = async () => {
 
 export default function Page() {
   const navigate = useNavigate();
+  const currentDate = useMemo(() => new Date(), []);
 
   const {
     data,
@@ -93,36 +94,44 @@ export default function Page() {
     },
   });
 
-  const yearField = useField<number | null>("year", 0);
-  const monthField = useField<number | null>("month", 0);
-  const dayField = useField<number | null>("day", 0);
-  const hourField = useField<number | null>("hour", 0);
-  const minuteField = useField<number | null>("minute", 0);
+  const yearField = useField(
+    "datetime_year",
+    z.number().int().min(1),
+    nullableDefaultValue(currentDate.getFullYear())
+  );
+  const monthField = useField(
+    "datetime_month",
+    z.number().int().min(1).max(12),
+    nullableDefaultValue(currentDate.getMonth() + 1)
+  );
+  const dayField = useField(
+    "datetime_day",
+    z.number().int().min(1).max(31),
+    nullableDefaultValue(currentDate.getDate())
+  );
+  const hourField = useField(
+    "datetime_hour",
+    z.number().int().min(0).max(23),
+    nullableDefaultValue(currentDate.getHours())
+  );
+  const minuteField = useField(
+    "datetime_minute",
+    z.number().int().min(0).max(59),
+    nullableDefaultValue(currentDate.getMinutes())
+  );
 
-  const mapIdField = useField<string>("mapId", "");
-  const player1IdField = useField<string>("player1Id", "");
-  const player2IdField = useField<string>("player2Id", "");
-  const character1IdField = useField<string>("character1Id", "");
-  const character2IdField = useField<string>("character2Id", "");
-  const winnerField = useField<1 | 2 | null>("winner", 1);
+  const mapIdField = useField("mapId", z.string().min(1), "");
+  const player1IdField = useField("player1Id", z.string().min(1), "");
+  const player2IdField = useField("player2Id", z.string().min(1), "");
+  const character1IdField = useField("character1Id", z.string().min(1), "");
+  const character2IdField = useField("character2Id", z.string().min(1), "");
+  const winnerField = useField(
+    "winner",
+    z.number().int().min(1).max(2),
+    nullableDefaultValue(1)
+  );
 
   const onSubmit = handleSubmit(
-    {
-      datetime: {
-        year: yearField.value,
-        month: monthField.value,
-        day: dayField.value,
-        hour: hourField.value,
-        minute: minuteField.value,
-      },
-      mapId: mapIdField.value,
-      player1Id: player1IdField.value,
-      player2Id: player2IdField.value,
-      character1Id: character1IdField.value,
-      character2Id: character2IdField.value,
-      winner: 1,
-    },
-    SubmitDataValidator,
     [
       yearField,
       monthField,
@@ -136,7 +145,24 @@ export default function Page() {
       character2IdField,
       winnerField,
     ],
-    (data) => mutateAsync(data)
+    ({
+      datetime_year,
+      datetime_month,
+      datetime_day,
+      datetime_hour,
+      datetime_minute,
+      ...rest
+    }) =>
+      mutateAsync({
+        datetime: {
+          year: datetime_year,
+          month: datetime_month,
+          day: datetime_day,
+          hour: datetime_hour,
+          minute: datetime_minute,
+        },
+        ...rest,
+      })
   );
 
   return (
