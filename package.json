@@ -13,7 +13,8 @@
         "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
         "type": "tsc",
         "format": "prettier --write .",
-        "format:check": "prettier --check ."
+        "format:check": "prettier --check .",
+        "checks": "yarn format:check && yarn type && yarn lint"
     },
     "dependencies": {
         "@hono/zod-validator": "^0.2.1",
