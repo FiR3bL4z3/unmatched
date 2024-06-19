@@ -11,6 +11,7 @@
         "client:build": "tsc && vite build",
         "dev": "concurrently -k -p \"[{name}]\" -n \"API,Client\" -c \"yellow.bold,cyan.bold\" \"bun api:dev\" \"bun client:dev\"",
         "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+        "type": "tsc",
         "format": "prettier --write .",
         "format:check": "prettier --check ."
     },

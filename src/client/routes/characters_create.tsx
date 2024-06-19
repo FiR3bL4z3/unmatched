@@ -5,7 +5,7 @@ import { APIError } from "../utils/api-error";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { StyledButton } from "../components/button-and-link";
-import { Input } from "../components/input";
+import { InputExtended } from "../components/input";
 import { Container } from "../components/container";
 import { Card } from "../components/card";
 
@@ -57,7 +57,7 @@ export default function Page() {
         <Container>
             <Card>
                 <form onSubmit={handleSubmit}>
-                    <Input
+                    <InputExtended
                         type="text"
                         placeholder="..."
                         value={name}
