@@ -32,11 +32,7 @@ export const InputExtended = forwardRef(
         return (
             <label className="block py-4">
                 <FormLabel>{label}</FormLabel>
-                <input
-                    {...props}
-                    ref={ref}
-                    className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 block w-full"
-                />
+                <Input {...props} ref={ref} />
                 {errorMessage && <FormError>{errorMessage}</FormError>}
             </label>
         );

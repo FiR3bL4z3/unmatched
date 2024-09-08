@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { client } from "../client";
 import { z } from "zod";
 import { APIError } from "../utils/api-error";
@@ -8,6 +7,8 @@ import { StyledButton } from "../components/button-and-link";
 import { InputExtended } from "../components/input";
 import { Container } from "../components/container";
 import { Card } from "../components/card";
+import { useField } from "../form/use-field";
+import { handleSubmit } from "../form/handle-submit";
 
 const SubmitDataValidator = z.object({
     name: z.string().min(3),
@@ -28,8 +29,7 @@ const submitData = async (data: SubmitData) => {
 };
 
 export default function Page() {
-    const [name, setName] = useState("");
-    const [nameError, setNameError] = useState("");
+    const nameField = useField("name", z.string(), "");
 
     const navigate = useNavigate();
 
@@ -40,30 +40,23 @@ export default function Page() {
         },
     });
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-
-        const result = SubmitDataValidator.safeParse({ name });
-
-        if (!result.success) {
-            setNameError(result.error.errors[0].message);
-            return;
-        }
-
-        mutateAsync(result.data);
-    };
+    const onSubmit = handleSubmit([nameField], ({ name }) => {
+        mutateAsync({
+            name,
+        });
+    });
 
     return (
         <Container>
             <Card>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={onSubmit}>
                     <InputExtended
                         type="text"
                         placeholder="..."
-                        value={name}
+                        value={nameField.value}
                         label="Name"
-                        errorMessage={nameError}
-                        onChange={(e) => setName(e.target.value)}
+                        errorMessage={nameField.error}
+                        onChange={(e) => nameField.setValue(e.target.value)}
                     />
 
                     <div className="flex justify-end">
