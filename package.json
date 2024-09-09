@@ -1,6 +1,12 @@
 {
     "type": "module",
     "license": "MIT",
+    "name": "unmatched",
+    "private": true,
+    "workspaces": [
+        "apps/*",
+        "packages/*"
+    ],
     "scripts": {
         "db:gen": "prisma generate",
         "db:migrate:dev": "dotenv -e .env.development -- prisma migrate dev",
@@ -10,12 +16,13 @@
         "api:dev": "bun run --watch src/api/index.ts",
         "client:dev": "vite",
         "client:build": "tsc && vite build",
-        "dev": "concurrently -k -p \"[{name}]\" -n \"API,Client\" -c \"yellow.bold,cyan.bold\" \"bun api:dev\" \"bun client:dev\"",
+        "dev-old": "concurrently -k -p \"[{name}]\" -n \"API,Client\" -c \"yellow.bold,cyan.bold\" \"bun api:dev\" \"bun client:dev\"",
+        "dev": "concurrently -k -p \"[{name}]\" -n \"API,Client\" -c \"yellow.bold,cyan.bold\" \"cd apps/api && bun dev\" \"cd apps/client && bun dev\"",
         "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
         "type": "tsc",
         "format": "prettier --write .",
         "format:check": "prettier --check .",
-        "checks": "yarn format:check && yarn type && yarn lint"
+        "checks": "bun format:check && bun type && bun lint"
     },
     "dependencies": {
         "@hono/zod-validator": "^0.2.1",

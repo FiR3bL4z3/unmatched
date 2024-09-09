@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Prettify } from "hono/utils/types";
+import { Prettify } from "../utils/prettify";
 import { Field } from "./use-field";
 
 export type FieldReturnsObject<
