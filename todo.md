@@ -1,3 +1,11 @@
+TODOS:
+
+-   [ ] remove dependecies from root package.json
+-   [ ] revamp scripts
+-   [ ] refactor tsconfigs
+-   [ ] refactor eslint configs
+-   [ ]
+
 Client todos:
 
 -   [x] create card component for wrapping list elements and stuff like that
