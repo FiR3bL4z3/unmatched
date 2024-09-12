@@ -1,10 +1,9 @@
 TODOS:
 
--   [ ] remove dependecies from root package.json
+-   [x] remove dependecies from root package.json
 -   [ ] revamp scripts
 -   [ ] refactor tsconfigs
 -   [ ] refactor eslint configs
--   [ ]
 
 Client todos:
 
@@ -14,3 +13,8 @@ Client todos:
 -   [x] start to work on the responses you get from the api to be more useful
 -   [ ] add auth and redirects
 -   [ ] create creation pages
+
+Long lasting / interesting
+
+-   [ ] learn framer motion
+-   [ ] add optional throttle to server (simulating slow server responses)

@@ -1,0 +1,18 @@
+{
+    // config for client react app witch is bundled by vite, strict by default
+    "compilerOptions": {
+        "target": "esnext",
+        "module": "esnext",
+        "jsx": "react-jsx",
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "moduleResolution": "Bundler",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "jsxImportSource": "react"
+    },
+    "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.js"]
+}
