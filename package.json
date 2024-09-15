@@ -20,6 +20,7 @@
         "lint": "bun api:lint && bun client:lint",
         "format": "prettier --write .",
         "format:check": "prettier --check .",
+        "test:api": "cd apps/api && bun test:e2e",
         "checks": "bun format:check && bun type && bun lint"
     },
     "dependencies": {

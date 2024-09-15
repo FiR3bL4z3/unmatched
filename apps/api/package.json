@@ -8,7 +8,10 @@
         "db:studio:dev": "dotenv -e .env.development -- prisma studio",
         "dev": "bun run --watch src/index.ts",
         "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-        "type": "tsc --noEmit"
+        "type": "tsc --noEmit",
+        "test:unit": "bun test -t __UNIT --preload ./test/setup-unit.ts",
+        "test:integration": "bun test -t __INTEGRATION --preload ./test/setup-integration.ts",
+        "test:e2e": "bun test -t __E2E --preload ./test/setup-e2e.ts"
     },
     "dependencies": {
         "@hono/zod-validator": "0.2.2",
@@ -26,5 +29,8 @@
         "eslint": "^8.57.0",
         "prisma": "^5.14.0",
         "typescript": "^5.2.2"
+    },
+    "prisma": {
+        "seed": "bun seed/index.ts"
     }
 }
