@@ -6,6 +6,7 @@ import { db } from "../db";
 import { sendError } from "../utils/send-error";
 import { fromPromise } from "neverthrow";
 import { handlePrismaError } from "../utils/handle-prisma-error";
+import { NotFoundError } from "@app/utils/not-found-error";
 
 const gamesRouter = new Hono()
     // GET /games
@@ -86,7 +87,11 @@ const gamesRouter = new Hono()
                 return sendError(c, getPlayer1Result.error, 500);
             }
             if (getPlayer1Result.value === null) {
-                return sendError(c, new Error("Player 1 not found"), 404);
+                return sendError(
+                    c,
+                    new NotFoundError("Player 1 not found"),
+                    404,
+                );
             }
 
             const getPlayer2Result = await fromPromise(
@@ -102,7 +107,19 @@ const gamesRouter = new Hono()
                 return sendError(c, getPlayer2Result.error, 500);
             }
             if (getPlayer2Result.value === null) {
-                return sendError(c, new Error("Player 2 not found"), 404);
+                return sendError(
+                    c,
+                    new NotFoundError("Player 2 not found"),
+                    404,
+                );
+            }
+
+            if (body.player1Id === body.player2Id) {
+                return sendError(
+                    c,
+                    new Error("Player 1 and Player 2 must be different"),
+                    400,
+                );
             }
 
             const getMapResult = await fromPromise(
