@@ -1,13 +1,14 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "./client";
+import { seedCharacters } from "./seed-characters";
+import { seedMaps } from "./seed-maps";
+import { seedPlayers } from "./seed-players";
 
 async function main() {
-    await prisma.map.create({
-        data: {
-            name: "Test Map",
-        },
-    });
+    console.log("Seeding database...");
+
+    await seedMaps(prisma);
+    await seedCharacters(prisma);
+    await seedPlayers(prisma);
 }
 
 main();
