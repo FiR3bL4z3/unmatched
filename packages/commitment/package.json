@@ -1,0 +1,12 @@
+{
+    "name": "commitment",
+    "bin": {
+        "commit": "./src/index.ts"
+    },
+    "dependencies": {
+        "@inquirer/prompts": "6.0.1"
+    },
+    "devDependencies": {
+        "@types/bun": "latest"
+    }
+}
