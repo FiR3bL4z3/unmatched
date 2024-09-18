@@ -1,10 +1,10 @@
 #!/usr/bin/env bun
 import { input, select, number } from "@inquirer/prompts";
 import { $ } from "bun";
-import { Config, configSchema, defaultConfig } from "./config";
+import { configSchema, ConfigWithDefaults, defaultConfig } from "./config";
 
 // import config file commitment.config.ts from project root if it exists
-let config: Config;
+let config: ConfigWithDefaults;
 try {
     const configFile = await import(`${process.cwd()}/commitment.config.ts`);
 
@@ -16,6 +16,15 @@ try {
 } catch {
     config = defaultConfig;
 }
+
+// Prompt for subproject tag if it exists
+const subProjectTag =
+    config.subProjectTags &&
+    (await select({
+        message: "What subproject is this commit for?",
+        choices: config.subProjectTags,
+        loop: true,
+    }));
 
 // Prompt for the type of commit
 const type = await select({
@@ -56,7 +65,7 @@ const message = await input({
     required: true,
 });
 
-const commitMessage = `${type}: ${taskId ? `[${config.projectTag}-${taskId}] ` : ""}${message}`;
+const commitMessage = `${type}: ${taskId ? `[${config.projectTag}${subProjectTag ? `/${subProjectTag}` : ""}-${taskId}] ` : ""}${message}`;
 
 const separator = "-".repeat(commitMessage.length);
 
