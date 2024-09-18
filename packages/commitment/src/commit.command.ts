@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 import { input, select, number } from "@inquirer/prompts";
-import { $, argv } from "bun";
+import { $ } from "bun";
 import { Config, configSchema, defaultConfig } from "./config";
 
 // import config file commitment.config.ts from project root if it exists
@@ -31,11 +31,24 @@ const type = await select({
     loop: true,
 });
 
-// Prompt for task id
-const taskId = await number({
-    message: "Enter the task id:",
-    required: true,
+// Prompt if the commit has a task id
+const hasTaskId = await select({
+    message: "Does this commit have a task id?",
+    choices: [
+        { name: "Yes", value: true },
+        { name: "No", value: false },
+    ],
+    default: true,
+    loop: true,
 });
+
+// Prompt for task id
+const taskId = hasTaskId
+    ? await number({
+          message: "Enter the task id:",
+          required: true,
+      })
+    : undefined;
 
 // Prompt for the commit message
 const message = await input({
@@ -43,7 +56,7 @@ const message = await input({
     required: true,
 });
 
-const commitMessage = `${type}: [${config.projectTag}-${taskId}] ${message}`;
+const commitMessage = `${type}: ${taskId ? `[${config.projectTag}-${taskId}] ` : ""}${message}`;
 
 const separator = "-".repeat(commitMessage.length);
 
