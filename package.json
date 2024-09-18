@@ -22,7 +22,7 @@
         "format:check": "prettier --check .",
         "test:api": "cd apps/api && bun test:e2e",
         "checks": "bun format:check && bun type && bun lint",
-        "commit": "bunx commit UNM"
+        "commit": "bunx commit"
     },
     "dependencies": {
         "prettier": "^3.2.5",
