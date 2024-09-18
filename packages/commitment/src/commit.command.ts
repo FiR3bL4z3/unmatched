@@ -1,10 +1,10 @@
 #!/usr/bin/env bun
 import { input, select, number } from "@inquirer/prompts";
 import { $ } from "bun";
-import { configSchema, ConfigWithDefaults, defaultConfig } from "./config";
+import { userConfigSchema, Config, defaultConfig } from "./config";
 
 // import config file commitment.config.ts from project root if it exists
-let config: ConfigWithDefaults;
+let config: Config;
 try {
     const configFile = await import(`${process.cwd()}/commitment.config.ts`);
 
@@ -12,7 +12,17 @@ try {
         throw new Error("No default export found in commitment.config.ts");
     }
 
-    config = { ...defaultConfig, ...configSchema.parse(configFile.default) };
+    const { types, ...userConfig } = userConfigSchema.parse(configFile.default);
+
+    config = {
+        ...defaultConfig,
+        ...userConfig,
+        types: types
+            ? types.extend
+                ? [...defaultConfig.types, ...types.extend]
+                : types.override
+            : defaultConfig.types,
+    };
 } catch {
     config = defaultConfig;
 }
@@ -29,13 +39,7 @@ const subProjectTag =
 // Prompt for the type of commit
 const type = await select({
     message: "What type of commit is this?",
-    choices: [
-        { name: "Feature", value: "feat" },
-        { name: "Fix", value: "fix" },
-        { name: "Refactor", value: "refactor" },
-        { name: "Test", value: "test" },
-        { name: "Docs", value: "docs" },
-    ],
+    choices: config.types,
     default: "feat",
     loop: true,
 });

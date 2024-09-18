@@ -7,6 +7,9 @@ const config: Config = {
         { name: "Api (app)", value: "API" },
         { name: "Commitment (package)", value: "CMT" },
     ],
+    types: {
+        extend: [{ name: "Chore", value: "chore" }],
+    },
 };
 
 export default config;

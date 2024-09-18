@@ -1,30 +1,42 @@
 import { z } from "zod";
 
-type WithNonNullableKeys<T> = {
-    [K in keyof T]-?: NonNullable<T[K]>;
-};
+const nameAndValueSchema = z.object({
+    name: z.string(),
+    value: z.string(),
+}); // TODO: better name
 
-type WithRequiredKeys<T, K extends keyof T> = WithNonNullableKeys<
-    Required<Pick<T, K>>
-> &
-    Omit<T, K>;
-
-export const configSchema = z.object({
+export const userConfigSchema = z.object({
     projectTag: z.string().optional(),
-    subProjectTags: z
-        .array(
+    subProjectTags: z.array(nameAndValueSchema).optional(),
+    types: z
+        .union([
             z.object({
-                name: z.string(),
-                value: z.string(),
+                extend: z.array(nameAndValueSchema),
+                override: z.never().optional(),
             }),
-        )
+            z.object({
+                extend: z.never().optional(),
+                override: z.array(nameAndValueSchema),
+            }),
+        ])
         .optional(),
 });
 
-export type Config = z.infer<typeof configSchema>;
+export type UserConfig = z.infer<typeof userConfigSchema>;
 
-export type ConfigWithDefaults = WithRequiredKeys<Config, "projectTag">;
+export type Config = {
+    projectTag: string;
+    subProjectTags?: { name: string; value: string }[];
+    types: { name: string; value: string }[];
+};
 
-export const defaultConfig: ConfigWithDefaults = {
+export const defaultConfig: Config = {
     projectTag: "TASK",
+    types: [
+        { name: "Feature", value: "feat" },
+        { name: "Fix", value: "fix" },
+        { name: "Refactor", value: "refactor" },
+        { name: "Test", value: "test" },
+        { name: "Docs", value: "docs" },
+    ],
 };
