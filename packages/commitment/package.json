@@ -1,7 +1,10 @@
 {
-    "name": "commitment",
+    "name": "@unmatched/commitment",
     "bin": {
-        "commit": "./src/commit.command.ts"
+        "commit": "./src/commands/commit.ts"
+    },
+    "scripts": {
+        "test:unit": "bun test"
     },
     "main": "./src/index.ts",
     "dependencies": {

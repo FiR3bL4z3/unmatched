@@ -21,12 +21,13 @@
         "format": "prettier --write .",
         "format:check": "prettier --check .",
         "test:api": "cd apps/api && bun test:e2e",
+        "test:commitment": "cd packages/commitment && bun test:unit",
         "checks": "bun format:check && bun type && bun lint",
         "commit": "bunx commit"
     },
     "dependencies": {
         "prettier": "^3.2.5",
-        "commitment": "workspace:*"
+        "@unmatched/commitment": "workspace:*"
     },
     "devDependencies": {
         "@types/bun": "latest",
