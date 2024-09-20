@@ -10,17 +10,13 @@ describe("parseConfig", () => {
     });
 
     test("parseConfig to return default config if config file does not have a default export", async () => {
-        const config = await parseConfig(
-            `${process.cwd()}/example-configs/empty.config.ts`,
-        );
+        const config = await parseConfig(`./example-configs/empty.config.ts`);
 
         expect(config).toEqual(defaultConfig);
     });
 
     test("parseConfig to return default config if config file does not match schema", async () => {
-        const config = await parseConfig(
-            `${process.cwd()}/example-configs/invalid.config.ts`,
-        );
+        const config = await parseConfig(`./example-configs/invalid.config.ts`);
 
         expect(config).toEqual(defaultConfig);
     });
@@ -65,5 +61,18 @@ describe("parseConfig", () => {
                 },
             ],
         });
+    });
+
+    test("parseConfig to not create duplicate types if values are the same", async () => {
+        const config = await parseConfig(
+            `./example-configs/duplicate-types.config.ts`,
+        );
+
+        expect(config.types).toEqual([
+            {
+                name: "Feature",
+                value: "feat",
+            },
+        ]);
     });
 });
