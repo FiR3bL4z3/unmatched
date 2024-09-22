@@ -6,6 +6,7 @@ const config: Config = {
         { name: "Client (app)", value: "WEB" },
         { name: "Api (app)", value: "API" },
         { name: "Commitment (package)", value: "CMT" },
+        { name: "Schema-gen (package)", value: "SG" },
     ],
     types: {
         extend: [{ name: "Chore", value: "chore" }],
