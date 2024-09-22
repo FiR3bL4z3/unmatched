@@ -1,4 +1,4 @@
-import { Config } from "commitment";
+import type { Config } from "commitment";
 
 const config: Config = {
     projectTag: "UNM",
