@@ -33,6 +33,7 @@ describe("parseConfig", () => {
                 { name: "Client (app)", value: "WEB" },
                 { name: "Api (app)", value: "API" },
                 { name: "Commitment (package)", value: "CMT" },
+                { name: "None", value: "" },
             ],
             types: [
                 {

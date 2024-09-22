@@ -39,4 +39,10 @@ export const defaultConfig: Config = {
         { name: "Test", value: "test" },
         { name: "Docs", value: "docs" },
     ],
+    subProjectTags: [
+        {
+            name: "None",
+            value: "",
+        },
+    ],
 };

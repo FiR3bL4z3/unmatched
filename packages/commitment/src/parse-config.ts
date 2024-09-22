@@ -10,15 +10,22 @@ export async function parseConfig(configFilePath: string) {
             throw new Error("No default export found in commitment.config.ts");
         }
 
-        const { types: userTypes, ...userConfig } = userConfigSchema.parse(
-            configFile.default,
-        );
+        const {
+            types: userTypes,
+            subProjectTags: userSubProjectTags,
+            ...userConfig
+        } = userConfigSchema.parse(configFile.default);
 
         const types = userTypes
             ? userTypes.extend
                 ? [...defaultConfig.types, ...userTypes.extend]
                 : userTypes.override
             : defaultConfig.types;
+
+        const subProjectTags = [
+            ...(userSubProjectTags ?? []),
+            ...(defaultConfig.subProjectTags ?? []),
+        ];
 
         config = {
             ...defaultConfig,
@@ -27,6 +34,7 @@ export async function parseConfig(configFilePath: string) {
                 (t, i) =>
                     i === types.findLastIndex((tt) => tt.value === t.value),
             ),
+            subProjectTags: subProjectTags,
         };
     } catch {
         config = defaultConfig;
