@@ -14,7 +14,7 @@
         "test:e2e": "bun test -t __E2E --preload ./test/setup-e2e.ts"
     },
     "dependencies": {
-        "@hono/zod-validator": "0.2.2",
+        "@hono/zod-openapi": "^0.16.0",
         "@prisma/client": "^5.14.0",
         "hono": "4.5.11",
         "neverthrow": "^6.2.1",

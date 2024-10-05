@@ -8,6 +8,3 @@ export const client = hc<AppType>("http://localhost:3000");
 export const openApiClient = createClient<paths>({
     baseUrl: "http://localhost:3000",
 });
-
-openApiClient.GET("/health-check");
-openApiClient.GET("/players");
