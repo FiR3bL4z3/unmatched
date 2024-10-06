@@ -16,4 +16,5 @@ jobs:
             - uses: oven-sh/setup-bun@v1
             - run: bun install
             - run: cd apps/api && bun db:gen
+            - run: bun gen
             - run: bun checks
