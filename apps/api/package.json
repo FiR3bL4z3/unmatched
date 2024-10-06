@@ -1,0 +1,36 @@
+{
+    "name": "unmatched-api",
+    "scripts": {
+        "db:gen": "prisma generate",
+        "db:migrate:dev": "dotenv -e .env.development -- prisma migrate dev",
+        "db:reset:dev": "dotenv -e .env.development -- prisma migrate reset --force",
+        "db:seed:dev": "dotenv -e .env.development -- prisma db seed",
+        "db:studio:dev": "dotenv -e .env.development -- prisma studio",
+        "dev": "bun run --watch src/index.ts",
+        "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+        "type": "tsc --noEmit",
+        "test:unit": "bun test -t __UNIT --preload ./test/setup-unit.ts",
+        "test:integration": "bun test -t __INTEGRATION --preload ./test/setup-integration.ts",
+        "test:e2e": "bun test -t __E2E --preload ./test/setup-e2e.ts"
+    },
+    "dependencies": {
+        "@hono/zod-openapi": "^0.16.0",
+        "@prisma/client": "^5.14.0",
+        "hono": "4.5.11",
+        "neverthrow": "^6.2.1",
+        "zod": "^3.23.8",
+        "zod-validation-error": "^3.3.0"
+    },
+    "devDependencies": {
+        "@types/bun": "latest",
+        "@typescript-eslint/eslint-plugin": "^7.2.0",
+        "@typescript-eslint/parser": "^7.2.0",
+        "dotenv-cli": "^7.4.2",
+        "eslint": "^8.57.0",
+        "prisma": "^5.14.0",
+        "typescript": "^5.2.2"
+    },
+    "prisma": {
+        "seed": "bun seed/index.ts"
+    }
+}
