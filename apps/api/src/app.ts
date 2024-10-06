@@ -18,8 +18,6 @@ app.doc("/openapi-schema", {
     },
 });
 
-export type AppType = typeof app;
-
 // TODO: refactor this to separate file and call it with createFileRouter(app, ["src", "router"])
 // list files in the /router directory
 import { readdirSync, lstatSync } from "node:fs";

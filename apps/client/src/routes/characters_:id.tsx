@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { client } from "../client";
+import { openApiClient } from "../client";
 import { APIError } from "../utils/api-error";
 import { QueryError } from "../components/query-error";
 import { useNavigate, useParams } from "react-router-dom";
@@ -13,31 +13,55 @@ type SubmitData = {
 };
 
 const submitData = async (data: SubmitData) => {
-    const response = await client.characters[":id"].$delete({ param: data });
+    const { data: successJson, error: errorJson } = await openApiClient.DELETE(
+        "/characters/{id}",
+        {
+            params: {
+                path: {
+                    id: data.id,
+                },
+            },
+        },
+    );
 
-    const json = await response.json();
-
-    if (!json.ok) {
-        throw new APIError(json);
+    if (errorJson || !successJson) {
+        throw new APIError(
+            errorJson ??
+                ({
+                    ok: false,
+                    path: "",
+                    description: "No data",
+                } as const),
+        );
     }
 
-    return json.data;
+    return successJson.data;
 };
 
-const loadData = async (characterId: string) => {
-    const response = await client.characters[":id"].$get({
-        param: {
-            id: characterId,
+const loadData = async (gameId: string) => {
+    const { data: successJson, error: errorJson } = await openApiClient.GET(
+        "/characters/{id}",
+        {
+            params: {
+                path: {
+                    id: gameId,
+                },
+            },
         },
-    });
+    );
 
-    const json = await response.json();
-
-    if (!json.ok) {
-        throw new APIError(json);
+    if (errorJson || !successJson) {
+        throw new APIError(
+            errorJson ??
+                ({
+                    ok: false,
+                    path: "",
+                    description: "No data",
+                } as const),
+        );
     }
 
-    return json.data;
+    return successJson.data;
 };
 
 export default function Page() {

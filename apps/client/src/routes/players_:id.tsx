@@ -1,24 +1,34 @@
 import { useQuery } from "@tanstack/react-query";
-import { client } from "../client";
+import { openApiClient } from "../client";
 import { APIError } from "../utils/api-error";
 import { QueryError } from "../components/query-error";
 import { useNavigate, useParams } from "react-router-dom";
 import { Loading } from "../components/loading";
 
-const loadData = async (playerId: string) => {
-    const response = await client.players[":id"].$get({
-        param: {
-            id: playerId,
+const loadData = async (gameId: string) => {
+    const { data: successJson, error: errorJson } = await openApiClient.GET(
+        "/players/{id}",
+        {
+            params: {
+                path: {
+                    id: gameId,
+                },
+            },
         },
-    });
+    );
 
-    const json = await response.json();
-
-    if (!json.ok) {
-        throw new APIError(json);
+    if (errorJson || !successJson) {
+        throw new APIError(
+            errorJson ??
+                ({
+                    ok: false,
+                    path: "",
+                    description: "No data",
+                } as const),
+        );
     }
 
-    return json.data;
+    return successJson.data;
 };
 
 export default function Page() {

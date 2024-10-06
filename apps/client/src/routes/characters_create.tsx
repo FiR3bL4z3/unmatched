@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { client } from "../client";
+import { openApiClient } from "../client";
 import { z } from "zod";
 import { APIError } from "../utils/api-error";
 import { useMutation } from "@tanstack/react-query";
@@ -16,15 +16,25 @@ const SubmitDataValidator = z.object({
 type SubmitData = z.infer<typeof SubmitDataValidator>;
 
 const submitData = async (data: SubmitData) => {
-    const response = await client.characters.$post({ json: data });
+    const { data: successJson, error: errorJson } = await openApiClient.POST(
+        "/characters",
+        {
+            body: data,
+        },
+    );
 
-    const json = await response.json();
-
-    if (!json.ok) {
-        throw new APIError(json);
+    if (errorJson || !successJson) {
+        throw new APIError(
+            errorJson ??
+                ({
+                    ok: false,
+                    path: "",
+                    description: "No data",
+                } as const),
+        );
     }
 
-    return json.data;
+    return successJson.data;
 };
 
 export default function Page() {

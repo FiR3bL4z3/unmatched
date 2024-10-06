@@ -1,4 +1,4 @@
-import { client } from "../client";
+import { openApiClient } from "../client";
 import { z } from "zod";
 import { APIError } from "../utils/api-error";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -33,40 +33,78 @@ type SubmitData = {
 };
 
 const submitData = async (data: SubmitData) => {
-    const response = await client.games.$post({ json: data });
+    const { data: successJson, error: errorJson } = await openApiClient.POST(
+        "/games",
+        {
+            body: data,
+        },
+    );
 
-    const json = await response.json();
-
-    if (!json.ok) {
-        throw new APIError(json);
+    if (errorJson || !successJson) {
+        throw new APIError(
+            errorJson ??
+                ({
+                    ok: false,
+                    path: "",
+                    description: "No data",
+                } as const),
+        );
     }
 
-    return json.data;
+    return successJson.data;
 };
 
 const loadData = async () => {
-    const [jsonMaps, jsonCharacters, jsonPlayers] = await Promise.all([
-        await (await client.maps.$get()).json(),
-        await (await client.characters.$get()).json(),
-        await (await client.players.$get()).json(),
-    ]);
+    const [mapsResponse, charactersResponse, playersResponse] =
+        await Promise.all([
+            await openApiClient.GET("/maps"),
+            await openApiClient.GET("/characters"),
+            await openApiClient.GET("/players"),
+        ]);
 
-    if (!jsonMaps.ok) {
-        throw new APIError(jsonMaps);
+    const { error: mapsErrorJson, data: mapsSuccessJson } = mapsResponse;
+    const { error: charactersErrorJson, data: charactersSuccessJson } =
+        charactersResponse;
+    const { error: playersErrorJson, data: playersSuccessJson } =
+        playersResponse;
+
+    if (mapsErrorJson || !mapsSuccessJson) {
+        throw new APIError(
+            mapsErrorJson ??
+                ({
+                    ok: false,
+                    path: "",
+                    description: "No maps data",
+                } as const),
+        );
     }
 
-    if (!jsonCharacters.ok) {
-        throw new APIError(jsonCharacters);
+    if (charactersErrorJson || !charactersSuccessJson) {
+        throw new APIError(
+            charactersErrorJson ??
+                ({
+                    ok: false,
+                    path: "",
+                    description: "No maps data",
+                } as const),
+        );
     }
 
-    if (!jsonPlayers.ok) {
-        throw new APIError(jsonPlayers);
+    if (playersErrorJson || !playersSuccessJson) {
+        throw new APIError(
+            playersErrorJson ??
+                ({
+                    ok: false,
+                    path: "",
+                    description: "No maps data",
+                } as const),
+        );
     }
 
     return {
-        maps: jsonMaps.data,
-        characters: jsonCharacters.data,
-        players: jsonPlayers.data,
+        maps: mapsSuccessJson.data,
+        characters: charactersSuccessJson.data,
+        players: playersSuccessJson.data,
     };
 };
 
