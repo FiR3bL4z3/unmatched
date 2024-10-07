@@ -12,9 +12,29 @@ jobs:
         name: Checks
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
-            - uses: oven-sh/setup-bun@v1
-            - run: bun install
-            - run: cd apps/api && bun db:gen
-            - run: bun gen
-            - run: bun checks
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup Bun
+              uses: oven-sh/setup-bun@v1
+
+            - name: Install dependencies
+              run: bun install
+
+            - name: Generate database types
+              run: cd apps/api && bun db:gen
+
+            - name: Generate API types
+              run: bun gen
+
+            - name: Run checks
+              run: bun checks
+
+            - name: Migrate database
+              run: cd apps/api && bun db:migrate:dev
+
+            - name: Test API
+              run: bun test:api
+
+            - name: Test Commitment
+              run: bun test:commitment

@@ -11,7 +11,7 @@
         "type": "tsc --noEmit",
         "test:unit": "bun test -t __UNIT --preload ./test/setup-unit.ts",
         "test:integration": "bun test -t __INTEGRATION --preload ./test/setup-integration.ts",
-        "test:e2e": "bun test -t __E2E --preload ./test/setup-e2e.ts"
+        "test:e2e": "dotenv -e .env.development bun test -t __E2E --preload ./test/setup-e2e.ts"
     },
     "dependencies": {
         "@hono/zod-openapi": "^0.16.0",
