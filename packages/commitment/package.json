@@ -9,6 +9,8 @@
     "main": "./src/index.ts",
     "dependencies": {
         "@inquirer/prompts": "6.0.1",
+        "@linear/sdk": "^31.0.0",
+        "neverthrow": "^6.2.1",
         "zod": "^3.23.8"
     },
     "devDependencies": {

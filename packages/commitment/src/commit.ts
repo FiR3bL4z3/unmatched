@@ -2,6 +2,7 @@
 import { input, select, number } from "@inquirer/prompts";
 import { $ } from "bun";
 import { parseConfig } from "./parse-config";
+import { LinearIntegration } from "./integrations/linear";
 
 export async function commit() {
     const config = await parseConfig(`${process.cwd()}/commitment.config.ts`);
@@ -14,6 +15,14 @@ export async function commit() {
             choices: config.subProjectTags,
             loop: true,
         }));
+
+    // const taskManagerIntegration = LinearIntegration(apiKey);
+
+    // const tasks = await taskManagerIntegration.getTasksByProject(
+    //     subProjectTag ?? "",
+    // );
+    // console.log("Tasks fetched successfully");
+    // console.log(tasks);
 
     // Prompt for the type of commit
     const type = await select({
