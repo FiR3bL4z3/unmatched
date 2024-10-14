@@ -17,6 +17,7 @@ import Home from "./routes/home";
 import Login from "./routes/login";
 import { NavigationBar } from "./components/navigation-bar";
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
+import { ModalProvider } from "./providers/modal-provider";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -98,8 +99,10 @@ const router = createBrowserRouter([
 
 export const App = () => {
     return (
-        <QueryClientProvider client={queryClient}>
-            <RouterProvider router={router} />
-        </QueryClientProvider>
+        <ModalProvider>
+            <QueryClientProvider client={queryClient}>
+                <RouterProvider router={router} />
+            </QueryClientProvider>
+        </ModalProvider>
     );
 };
