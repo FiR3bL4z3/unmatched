@@ -3,7 +3,10 @@ import { openApiClient } from "../client";
 import { APIError } from "../utils/api-error";
 import { QueryError } from "../components/query-error";
 import { useNavigate, useParams } from "react-router-dom";
-import { StyledButton, StyledLink } from "../components/button-and-link";
+import {
+    StyledButton,
+    StyledLink,
+} from "../components/button-and-link/button-and-link";
 import { Dialog } from "../components/dialog";
 import { useState } from "react";
 import { Loading } from "../components/loading";

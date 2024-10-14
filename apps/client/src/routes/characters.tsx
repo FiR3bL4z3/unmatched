@@ -4,7 +4,7 @@ import { APIError } from "../utils/api-error";
 import { QueryError } from "../components/query-error";
 import { Link } from "react-router-dom";
 import { ListGrid } from "../components/list-grid";
-import { Card } from "../components/card";
+import { Card } from "../components/card/card";
 import { Container } from "../components/container";
 import { Loading } from "../components/loading";
 import { ListPageHeader } from "../components/list-page-header";

@@ -7,7 +7,7 @@ import { Loading } from "../components/loading";
 import { Container } from "../components/container";
 import { ListPageHeader } from "../components/list-page-header";
 import { ListGrid } from "../components/list-grid";
-import { Card } from "../components/card";
+import { Card } from "../components/card/card";
 
 const loadData = async () => {
     const { data: successJson, error: errorJson } =

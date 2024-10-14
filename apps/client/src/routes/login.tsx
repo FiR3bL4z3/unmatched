@@ -1,4 +1,4 @@
-import { StyledButton } from "../components/button-and-link";
+import { StyledButton } from "../components/button-and-link/button-and-link";
 
 export default function Page() {
     return (

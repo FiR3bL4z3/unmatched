@@ -18,8 +18,21 @@ const ResponseSchema = z
             character2Id: z.string(),
             winner: z.number(),
             date: z.date(),
-            createdAt: z.date(),
-            updatedAt: z.date(),
+            player1: z.object({
+                name: z.string(),
+            }),
+            player2: z.object({
+                name: z.string(),
+            }),
+            character1: z.object({
+                name: z.string(),
+            }),
+            character2: z.object({
+                name: z.string(),
+            }),
+            map: z.object({
+                name: z.string(),
+            }),
         }),
     })
     .openapi("Game");
@@ -67,6 +80,41 @@ router.openapi(route, async (c) => {
         db.game.findUnique({
             where: {
                 id,
+            },
+            select: {
+                id: true,
+                mapId: true,
+                player1Id: true,
+                player2Id: true,
+                character1Id: true,
+                character2Id: true,
+                winner: true,
+                date: true,
+                player1: {
+                    select: {
+                        name: true,
+                    },
+                },
+                player2: {
+                    select: {
+                        name: true,
+                    },
+                },
+                character1: {
+                    select: {
+                        name: true,
+                    },
+                },
+                character2: {
+                    select: {
+                        name: true,
+                    },
+                },
+                map: {
+                    select: {
+                        name: true,
+                    },
+                },
             },
         }),
         handlePrismaError,

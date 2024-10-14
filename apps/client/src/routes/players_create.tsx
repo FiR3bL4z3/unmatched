@@ -3,10 +3,10 @@ import { z } from "zod";
 import { APIError } from "../utils/api-error";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { StyledButton } from "../components/button-and-link";
+import { StyledButton } from "../components/button-and-link/button-and-link";
 import { InputExtended } from "../components/input";
 import { Container } from "../components/container";
-import { Card } from "../components/card";
+import { Card } from "../components/card/card";
 import { useField } from "../form/use-field";
 import { handleSubmit } from "../form/handle-submit";
 

@@ -1,4 +1,4 @@
-import { StyledLink } from "./button-and-link";
+import { StyledLink } from "./button-and-link/button-and-link";
 
 export type NavigationBarProps = {
     userId?: string | undefined;

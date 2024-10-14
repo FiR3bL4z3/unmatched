@@ -2,11 +2,14 @@
     "name": "unmatched-client",
     "type": "module",
     "scripts": {
-        "dev": "vite",
+        "dev": "concurrently \"bun dev:app\" \"bun cosmos\"",
+        "dev:app": "vite",
         "build": "tsc && vite build",
         "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
         "gen": "openapi-typescript http://localhost:3000/openapi-schema -o ./src/generated/api/v1.d.ts",
-        "type": "tsc"
+        "type": "tsc",
+        "cosmos": "cosmos",
+        "cosmos-export": "cosmos-export"
     },
     "dependencies": {
         "@tanstack/react-query": "^5.40.0",
@@ -31,6 +34,8 @@
         "eslint-plugin-react-refresh": "^0.4.6",
         "openapi-typescript": "^7.4.1",
         "postcss": "^8.4.38",
+        "react-cosmos": "^6.2.0",
+        "react-cosmos-plugin-vite": "^6.2.0",
         "tailwindcss": "^3.4.3",
         "typescript": "^5.2.2",
         "vite": "^5.2.0"
